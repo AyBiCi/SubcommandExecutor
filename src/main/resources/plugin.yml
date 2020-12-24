@@ -1,0 +1,7 @@
+name: SubcommandExecutorTestPlugin
+main: main.PluginTestClass
+version: 1.15.2
+api-version: 1.15
+commands:
+  test:
+    description: Test command.
