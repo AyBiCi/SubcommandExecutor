@@ -3,16 +3,18 @@ package com.github.aybici;
 import org.bukkit.command.CommandExecutor;
 
 public class Subcommand {
-    public String name;
-    public CommandExecutor executor;
-    public String description;
-    public int[] possibleArgsCount;
+    private String name;
+    private CommandExecutor executor;
+    private String description;
+    private String argsString;
+    private int[] possibleArgsCount;
 
-    public Subcommand(String name, CommandExecutor executor, String description, int[] possibleArgsCount){
+    public Subcommand(String name,String argsString, String description, int[] possibleArgsCount, CommandExecutor executor){
         this.name = name;
-        this.executor = executor;
+        this.argsString = argsString;
         this.description = description;
         this.possibleArgsCount = possibleArgsCount;
+        this.executor = executor;
     }
 
     public String getName(){
@@ -27,4 +29,5 @@ public class Subcommand {
     public int[] getPossibleArgsCount(){
         return possibleArgsCount;
     }
+    public String getArgsString(){return argsString;}
 }

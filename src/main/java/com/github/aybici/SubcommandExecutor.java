@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SubcommandExecutor implements CommandExecutor{
@@ -12,18 +13,19 @@ public class SubcommandExecutor implements CommandExecutor{
     private final HashMap<String,Subcommand> executors = new HashMap<>();
     private String commandName;
     private CommandExecutor defaultExecutor;
-    private CommandExecutor helpCommandExecutor = (commandSender, command, s, strings) -> {
-        commandSender.sendMessage("Lista subkomend dla komendy "+commandName);
-        return true;
-    };
 
     public SubcommandExecutor(String commandName) {
         this.commandName = commandName;
+        addHelpCommand();
     }
 
+    public void setDefaultExecutor(CommandExecutor newDefaultExecutor) {
+        defaultExecutor = newDefaultExecutor;
+    }
 
-    public void addCommandExecutor(String name, String description, int[] possibleArgsCount,CommandExecutor executor) {
-        Subcommand subcommand = new Subcommand(name, executor, description, possibleArgsCount);
+    public void addCommandExecutor(String name,String argsString, String description,
+                                   int[] possibleArgsCount,CommandExecutor executor) {
+        Subcommand subcommand = new Subcommand(name, argsString, description, possibleArgsCount,executor);
         executors.put(name, subcommand);
     }
 
@@ -32,11 +34,6 @@ public class SubcommandExecutor implements CommandExecutor{
         String subcommandName = "";
         if(args.length != 0){
             subcommandName = args[0];
-        }
-
-        if(subcommandName.equals("help")){
-            helpCommandExecutor.onCommand(commandSender, command, s, null);
-            return true;
         }
 
         String[] newArgs = (String[]) ArrayUtils.subarray(args,1,args.length);
@@ -52,22 +49,6 @@ public class SubcommandExecutor implements CommandExecutor{
         }
 
         throw new NoExecutorForCommand(subcommandName);
-    }
-
-    private boolean hasDefaultExecutor() {
-        return defaultExecutor != null;
-    }
-
-    private Subcommand getExecutor(String subcommand){
-        return executors.get(subcommand);
-    }
-
-    public boolean hasExecutor(String subcommand) {
-        return executors.containsKey(subcommand);
-    }
-
-    public void setDefaultExecutor(CommandExecutor newDefaultExecutor) {
-        defaultExecutor = newDefaultExecutor;
     }
 
     public static class NoExecutorForCommand extends RuntimeException{
@@ -86,5 +67,39 @@ public class SubcommandExecutor implements CommandExecutor{
         public String getMessage(){
             return "No executor for subcommand \""+subcommandName+"\"!";
         }
+    }
+
+    private boolean hasExecutor(String subcommand) {
+        return executors.containsKey(subcommand);
+    }
+
+    private boolean hasDefaultExecutor() {
+        return defaultExecutor != null;
+    }
+
+    private Subcommand getExecutor(String subcommand){
+        return executors.get(subcommand);
+    }
+
+    private void addHelpCommand(){
+        this.addCommandExecutor("help",
+                "",
+                "shows all commands in plugin",
+                new int[]{0},
+                (commandSender, command, s, strings) -> {
+                    commandSender.sendMessage("Command list for "+commandName+":");
+
+                    HashMap<String,Subcommand> subcommands = new HashMap<>(executors);
+                    subcommands.remove("help");
+
+                    for(Subcommand subcommand : subcommands.values()){
+                        commandSender.sendMessage(commandName+" "
+                                +subcommand.getName()+" "
+                                +subcommand.getArgsString()+" - "
+                                +subcommand.getDescription()
+                        );
+                    }
+                    return true;
+                });
     }
 }

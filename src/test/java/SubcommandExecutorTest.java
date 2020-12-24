@@ -21,6 +21,7 @@ public class SubcommandExecutorTest {
 
         executor.addCommandExecutor(
                 "create",
+                "<name>",
                 "description of a command",
                 new int[]{1}, // Command gets one parameter, none parameters or more than 1 will be error
                 (commandSender, command, s, strings) -> {
@@ -30,6 +31,7 @@ public class SubcommandExecutorTest {
 
         executor.addCommandExecutor(
                 "delete",
+                "<name>",
                 "description of a command",
                 new int[]{1},
                 (commandSender, command, s, strings) -> {
@@ -49,6 +51,7 @@ public class SubcommandExecutorTest {
 
         executor.addCommandExecutor(
                 "subcommand",
+                "<argument>",
                 "description of a command",
                 new int[]{1},
                 (commandSender, command, s, strings) -> false); // Just not null
@@ -58,25 +61,12 @@ public class SubcommandExecutorTest {
     }
 
     @Test
-    public void checkIsExecutable(){
-
-        Assertions.assertFalse(executor.hasExecutor("subcommand"));
-
-        executor.addCommandExecutor(
-                "subcommand",
-                "description of a command",
-                new int[]{1},
-                (commandSender, command, s, strings) -> false);
-
-        Assertions.assertTrue(executor.hasExecutor("subcommand"));
-    }
-
-    @Test
     public void checkExecution(){
         final Boolean[] executed = {false};
 
         executor.addCommandExecutor(
                 "subcommand",
+                "<argument>",
                 "description of a command",
                 new int[]{1},
                 new CommandExecutor() {
@@ -122,10 +112,5 @@ public class SubcommandExecutorTest {
         });
         executor.onCommand(null, null, null, new String[]{});
         Assertions.assertEquals("lol", testString[0]);
-    }
-
-    @Test
-    public void testHelpCommand(){
-
     }
 }
