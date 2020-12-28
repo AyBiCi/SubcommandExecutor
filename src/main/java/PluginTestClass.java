@@ -42,19 +42,11 @@ public class PluginTestClass extends JavaPlugin {
                         "",
                         "marek",
                         new int[]{0},
-                        (commandSender, command, s, strings) -> {
-                            commandSender.sendMessage("remove "+strings[0]);
-                            return true;
-                        }
+                        null
                 ));
         getCommand("test").setExecutor(executor);
     }
 
-    //Constuctors for MockBukkit
-    public PluginTestClass()
-    {
-        super();
-    }
     protected PluginTestClass(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file)
     {
         super(loader, description, dataFolder, file);

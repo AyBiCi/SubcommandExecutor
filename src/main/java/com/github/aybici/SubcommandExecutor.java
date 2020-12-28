@@ -76,25 +76,19 @@ public class SubcommandExecutor implements CommandExecutor{
         return defaultExecutor != null;
     }
 
+    public String getCommandName(){
+        return commandName;
+    }
+
+    public ArrayList<Subcommand> getSubcommands(){
+        return new ArrayList<>(executors.values());
+    }
+
     private Subcommand getExecutor(String subcommand){
         return executors.get(subcommand);
     }
 
     private void addHelpCommand(){
-        this.addCommandExecutor(new Subcommand("help",
-                "",
-                "shows all commands in plugin",
-                new int[]{0},
-                (commandSender, command, s, strings) -> {
-                    commandSender.sendMessage("Command list for "+commandName+":");
-
-                    HashMap<String,Subcommand> subcommands = new HashMap<>(executors);
-                    subcommands.remove("help");
-
-                    for(Subcommand subcommand : subcommands.values()){
-                        commandSender.sendMessage(subcommand.createHelpString());
-                    }
-                    return true;
-                }));
+        addCommandExecutor( HelpCommand.newHelpCommand(this) );
     }
 }

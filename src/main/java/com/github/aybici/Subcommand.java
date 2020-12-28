@@ -29,11 +29,4 @@ public class Subcommand {
     public CommandExecutor getExecutor(){
         return executor;
     }
-    public String getDescription(){
-        return description;
-    }
-    public int[] getPossibleArgsCount(){
-        return possibleArgsCount;
-    }
-    public String getArgsString(){return argsString;}
 }

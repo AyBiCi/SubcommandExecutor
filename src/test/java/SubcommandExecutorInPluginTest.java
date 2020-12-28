@@ -40,6 +40,7 @@ public class SubcommandExecutorInPluginTest {
 
         assertEquals("Command list for test:",player.nextMessage());
         assertEquals("test add <name> - adds new test",player.nextMessage());
+        assertEquals("test help - shows all commands in plugin",player.nextMessage());
         assertEquals("test marek - marek",player.nextMessage());
         assertEquals("test remove <name> - removes test",player.nextMessage());
     }
