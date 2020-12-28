@@ -1,3 +1,4 @@
+import com.github.aybici.Subcommand;
 import com.github.aybici.SubcommandExecutor;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,7 +13,7 @@ public class PluginTestClass extends JavaPlugin {
         SubcommandExecutor executor = new SubcommandExecutor("test");
 
         executor.addCommandExecutor
-                (
+                (new Subcommand(
                         "add",
                     "<name>",
                     "adds new test",
@@ -21,10 +22,10 @@ public class PluginTestClass extends JavaPlugin {
                         commandSender.sendMessage("add "+strings[0]);
                         return true;
                     }
-                );
+                ));
 
         executor.addCommandExecutor
-                (
+                (new Subcommand(
                         "remove",
                     "<name>",
                     "removes test",
@@ -33,8 +34,19 @@ public class PluginTestClass extends JavaPlugin {
                             commandSender.sendMessage("remove "+strings[0]);
                             return true;
                         }
-               );
+               ));
 
+        executor.addCommandExecutor
+                (new Subcommand(
+                        "marek",
+                        "",
+                        "marek",
+                        new int[]{0},
+                        (commandSender, command, s, strings) -> {
+                            commandSender.sendMessage("remove "+strings[0]);
+                            return true;
+                        }
+                ));
         getCommand("test").setExecutor(executor);
     }
 

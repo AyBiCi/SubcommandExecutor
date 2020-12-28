@@ -23,10 +23,9 @@ public class SubcommandExecutor implements CommandExecutor{
         defaultExecutor = newDefaultExecutor;
     }
 
-    public void addCommandExecutor(String name,String argsString, String description,
-                                   int[] possibleArgsCount,CommandExecutor executor) {
-        Subcommand subcommand = new Subcommand(name, argsString, description, possibleArgsCount,executor);
-        executors.put(name, subcommand);
+    public void addCommandExecutor(Subcommand subcommand) {
+        subcommand.setParentCommandName(commandName);
+        executors.put(subcommand.getName(), subcommand);
     }
 
     @Override
@@ -82,7 +81,7 @@ public class SubcommandExecutor implements CommandExecutor{
     }
 
     private void addHelpCommand(){
-        this.addCommandExecutor("help",
+        this.addCommandExecutor(new Subcommand("help",
                 "",
                 "shows all commands in plugin",
                 new int[]{0},
@@ -93,13 +92,9 @@ public class SubcommandExecutor implements CommandExecutor{
                     subcommands.remove("help");
 
                     for(Subcommand subcommand : subcommands.values()){
-                        commandSender.sendMessage(commandName+" "
-                                +subcommand.getName()+" "
-                                +subcommand.getArgsString()+" - "
-                                +subcommand.getDescription()
-                        );
+                        commandSender.sendMessage(subcommand.createHelpString());
                     }
                     return true;
-                });
+                }));
     }
 }

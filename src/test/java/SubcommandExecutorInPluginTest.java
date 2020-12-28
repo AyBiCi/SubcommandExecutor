@@ -11,11 +11,13 @@ public class SubcommandExecutorInPluginTest {
 
     ServerMock server;
     PluginTestClass plugin;
+    PlayerMock player;
 
     @BeforeEach
     public void setup(){
         server = MockBukkit.mock();
         plugin = (PluginTestClass) MockBukkit.load(PluginTestClass.class);
+        player = server.addPlayer();
     }
 
     @AfterEach
@@ -23,22 +25,8 @@ public class SubcommandExecutorInPluginTest {
         MockBukkit.unmock();
     }
 
-
-    @Test
-    public void testHelpCommand(){
-        PlayerMock player = server.addPlayer();
-
-        player.performCommand("test help");
-
-        assertEquals("Command list for test:",player.nextMessage());
-        assertEquals("test add <name> - adds new test",player.nextMessage());
-        assertEquals("test remove <name> - removes test",player.nextMessage());
-    }
-
     @Test
     public void testCommandExecution(){
-        PlayerMock player = server.addPlayer();
-
         player.performCommand("test add abcd");
         assertEquals("add abcd", player.nextMessage());
 
@@ -46,4 +34,13 @@ public class SubcommandExecutorInPluginTest {
         assertEquals("remove abcd", player.nextMessage());
     }
 
+    @Test
+    public void testDoubleSpaceHelpProblemOnNoArgsSubcommand(){
+        player.performCommand("test help");
+
+        assertEquals("Command list for test:",player.nextMessage());
+        assertEquals("test add <name> - adds new test",player.nextMessage());
+        assertEquals("test marek - marek",player.nextMessage());
+        assertEquals("test remove <name> - removes test",player.nextMessage());
+    }
 }

@@ -1,3 +1,4 @@
+import com.github.aybici.Subcommand;
 import com.github.aybici.SubcommandExecutor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,6 +21,7 @@ public class SubcommandExecutorTest {
         final String[] testString = new String[1];
 
         executor.addCommandExecutor(
+                new Subcommand(
                 "create",
                 "<name>",
                 "description of a command",
@@ -27,9 +29,10 @@ public class SubcommandExecutorTest {
                 (commandSender, command, s, strings) -> {
                     testString[0] = "create";
                     return false;
-                });
+                }));
 
         executor.addCommandExecutor(
+                new Subcommand(
                 "delete",
                 "<name>",
                 "description of a command",
@@ -37,7 +40,7 @@ public class SubcommandExecutorTest {
                 (commandSender, command, s, strings) -> {
                     testString[0] = "delete";
                     return false;
-                });
+                }));
 
         executor.onCommand(null, null, null, new String[]{"create"});
         Assertions.assertEquals("create", testString[0]);
@@ -50,11 +53,12 @@ public class SubcommandExecutorTest {
     public void firstCliSubcommandExecutorTest(){
 
         executor.addCommandExecutor(
+                new Subcommand(
                 "subcommand",
                 "<argument>",
                 "description of a command",
                 new int[]{1},
-                (commandSender, command, s, strings) -> false); // Just not null
+                (commandSender, command, s, strings) -> false)); // Just not null
 
         String[] args = new String[]{"subcommand"};
         executor.onCommand(null,null,null, args);
@@ -65,6 +69,7 @@ public class SubcommandExecutorTest {
         final Boolean[] executed = {false};
 
         executor.addCommandExecutor(
+                new Subcommand(
                 "subcommand",
                 "<argument>",
                 "description of a command",
@@ -75,7 +80,7 @@ public class SubcommandExecutorTest {
                         executed[0] = true;
                         return false;
                     }
-                });
+                }));
 
         executor.onCommand(null,null,null, new String[]{"subcommand"});
 
@@ -113,4 +118,6 @@ public class SubcommandExecutorTest {
         executor.onCommand(null, null, null, new String[]{});
         Assertions.assertEquals("lol", testString[0]);
     }
+
+
 }

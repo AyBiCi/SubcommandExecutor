@@ -8,6 +8,7 @@ public class Subcommand {
     private String description;
     private String argsString;
     private int[] possibleArgsCount;
+    private String parentCommandName;
 
     public Subcommand(String name,String argsString, String description, int[] possibleArgsCount, CommandExecutor executor){
         this.name = name;
@@ -17,6 +18,11 @@ public class Subcommand {
         this.executor = executor;
     }
 
+    public String createHelpString(){
+        return parentCommandName+" "+name+(argsString.length() > 0 ? " " : "")+argsString + " - " + description;
+    }
+
+    public void setParentCommandName(String parentCommandName){ this.parentCommandName = parentCommandName; };
     public String getName(){
         return name;
     }
