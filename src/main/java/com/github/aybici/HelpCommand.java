@@ -5,7 +5,6 @@ public class HelpCommand {
         Subcommand helpCommand = new Subcommand("help",
                 "",
                 "shows all commands in plugin",
-                new int[]{0},
                 (commandSender, command, s, strings) -> {
                     commandSender.sendMessage("Command list for " + executor.getCommandName() + ":");
 

@@ -10,11 +10,11 @@ public class Subcommand {
     private int[] possibleArgsCount;
     private String parentCommandName;
 
-    public Subcommand(String name,String argsString, String description, int[] possibleArgsCount, CommandExecutor executor){
+    public Subcommand(String name,String argsString, String description, CommandExecutor executor){
         this.name = name;
         this.argsString = argsString;
         this.description = description;
-        this.possibleArgsCount = possibleArgsCount;
+        this.possibleArgsCount = ArgsCounter.countArgs(argsString);
         this.executor = executor;
     }
 

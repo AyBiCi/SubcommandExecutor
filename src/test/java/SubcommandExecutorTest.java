@@ -25,7 +25,6 @@ public class SubcommandExecutorTest {
                 "create",
                 "<name>",
                 "description of a command",
-                new int[]{1}, // Command gets one parameter, none parameters or more than 1 will be error
                 (commandSender, command, s, strings) -> {
                     testString[0] = "create";
                     return false;
@@ -36,7 +35,6 @@ public class SubcommandExecutorTest {
                 "delete",
                 "<name>",
                 "description of a command",
-                new int[]{1},
                 (commandSender, command, s, strings) -> {
                     testString[0] = "delete";
                     return false;
@@ -57,7 +55,6 @@ public class SubcommandExecutorTest {
                 "subcommand",
                 "<argument>",
                 "description of a command",
-                new int[]{1},
                 (commandSender, command, s, strings) -> false)); // Just not null
 
         String[] args = new String[]{"subcommand"};
@@ -73,7 +70,6 @@ public class SubcommandExecutorTest {
                 "subcommand",
                 "<argument>",
                 "description of a command",
-                new int[]{1},
                 new CommandExecutor() {
                     @Override
                     public boolean onCommand(CommandSender commandSender,Command command, String s, String[] strings) {

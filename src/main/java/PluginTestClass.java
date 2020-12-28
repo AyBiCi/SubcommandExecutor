@@ -17,7 +17,6 @@ public class PluginTestClass extends JavaPlugin {
                         "add",
                     "<name>",
                     "adds new test",
-                    new int[]{1},
                     (commandSender, command, s, strings) -> {
                         commandSender.sendMessage("add "+strings[0]);
                         return true;
@@ -29,7 +28,6 @@ public class PluginTestClass extends JavaPlugin {
                         "remove",
                     "<name>",
                     "removes test",
-                    new int[]{1},
                     (commandSender, command, s, strings) -> {
                             commandSender.sendMessage("remove "+strings[0]);
                             return true;
@@ -41,7 +39,6 @@ public class PluginTestClass extends JavaPlugin {
                         "marek",
                         "",
                         "marek",
-                        new int[]{0},
                         null
                 ));
         getCommand("test").setExecutor(executor);
