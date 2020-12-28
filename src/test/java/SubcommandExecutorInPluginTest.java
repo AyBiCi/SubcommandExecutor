@@ -52,4 +52,10 @@ public class SubcommandExecutorInPluginTest {
         player.performCommand("test remove");
         assertEquals("Bad usage! Usage: test remove <name>",player.nextMessage());
     }
+
+    @Test
+    public void testStandardExecutor(){
+        player.performCommand("test abc");
+        assertEquals("Command list - test help",player.nextMessage());
+    }
 }

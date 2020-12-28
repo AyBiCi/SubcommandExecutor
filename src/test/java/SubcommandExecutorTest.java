@@ -82,6 +82,7 @@ public class SubcommandExecutorTest {
 
     @Test
     public void testThrowNoExecutor(){
+        executor.setDefaultExecutor(null);
         testThrowSubname("makrejsl");
         testThrowSubname("asdgs");
         testThrowSubname("makrsdfgsdfejsl");
@@ -89,8 +90,13 @@ public class SubcommandExecutorTest {
     }
 
     private void testThrowSubname(String name){
-        SubcommandExecutor.NoExecutorForCommand exception =
-                Assertions.assertThrows(SubcommandExecutor.NoExecutorForCommand.class, () -> executor.onCommand(null, null, null, new String[]{name}));
+        SubcommandExecutor.NoExecutorForCommand exception;
+        exception = Assertions.assertThrows(
+                SubcommandExecutor.NoExecutorForCommand.class,
+                () -> executor.onCommand(null,
+                        null,
+                        null,
+                        new String[]{name}));
 
         Assertions.assertEquals(name,exception.getSubcommandName());
         Assertions.assertEquals("No executor for subcommand \""+name+"\"!", exception.getMessage());

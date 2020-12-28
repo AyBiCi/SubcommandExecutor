@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@SuppressWarnings("NullableProblems")
 public class SubcommandExecutor implements CommandExecutor{
 
     private final HashMap<String,Subcommand> executors = new HashMap<>();
@@ -27,6 +26,10 @@ public class SubcommandExecutor implements CommandExecutor{
     public void addCommandExecutor(Subcommand subcommand) {
         subcommand.setParentCommandName(commandName);
         executors.put(subcommand.getName(), subcommand);
+        setDefaultExecutor((commandSender, command, s, strings) -> {
+            commandSender.sendMessage("Command list - "+commandName+" help");
+            return false;
+        });
     }
 
     @Override
