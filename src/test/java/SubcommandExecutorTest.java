@@ -40,10 +40,10 @@ public class SubcommandExecutorTest {
                     return false;
                 }));
 
-        executor.onCommand(null, null, null, new String[]{"create"});
+        executor.onCommand(null, null, null, new String[]{"create","marek"});
         Assertions.assertEquals("create", testString[0]);
 
-        executor.onCommand(null, null, null, new String[]{"delete"});
+        executor.onCommand(null, null, null, new String[]{"delete","marek"});
         Assertions.assertEquals("delete", testString[0]);
     }
 
@@ -57,7 +57,7 @@ public class SubcommandExecutorTest {
                 "description of a command",
                 (commandSender, command, s, strings) -> false)); // Just not null
 
-        String[] args = new String[]{"subcommand"};
+        String[] args = new String[]{"subcommand","argument"};
         executor.onCommand(null,null,null, args);
     }
 
@@ -70,15 +70,12 @@ public class SubcommandExecutorTest {
                 "subcommand",
                 "<argument>",
                 "description of a command",
-                new CommandExecutor() {
-                    @Override
-                    public boolean onCommand(CommandSender commandSender,Command command, String s, String[] strings) {
-                        executed[0] = true;
-                        return false;
-                    }
-                }));
+                        (commandSender, command, s, strings) -> {
+                            executed[0] = true;
+                            return false;
+                        }));
 
-        executor.onCommand(null,null,null, new String[]{"subcommand"});
+        executor.onCommand(null,null,null, new String[]{"subcommand","argument"});
 
         Assertions.assertTrue(executed[0]);
     }
@@ -93,9 +90,7 @@ public class SubcommandExecutorTest {
 
     private void testThrowSubname(String name){
         SubcommandExecutor.NoExecutorForCommand exception =
-                Assertions.assertThrows(SubcommandExecutor.NoExecutorForCommand.class, () -> {
-                    executor.onCommand(null, null, null, new String[]{name});
-                });
+                Assertions.assertThrows(SubcommandExecutor.NoExecutorForCommand.class, () -> executor.onCommand(null, null, null, new String[]{name}));
 
         Assertions.assertEquals(name,exception.getSubcommandName());
         Assertions.assertEquals("No executor for subcommand \""+name+"\"!", exception.getMessage());
@@ -104,12 +99,9 @@ public class SubcommandExecutorTest {
     @Test
     public void testStandardCommand(){
         final String[] testString = new String[1];
-        executor.setDefaultExecutor(new CommandExecutor() {
-            @Override
-            public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-                testString[0] = "lol";
-                return false;
-            }
+        executor.setDefaultExecutor((commandSender, command, s, strings) -> {
+            testString[0] = "lol";
+            return false;
         });
         executor.onCommand(null, null, null, new String[]{});
         Assertions.assertEquals("lol", testString[0]);

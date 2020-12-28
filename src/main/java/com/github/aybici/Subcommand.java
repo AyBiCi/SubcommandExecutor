@@ -3,11 +3,11 @@ package com.github.aybici;
 import org.bukkit.command.CommandExecutor;
 
 public class Subcommand {
-    private String name;
-    private CommandExecutor executor;
-    private String description;
-    private String argsString;
-    private int[] possibleArgsCount;
+    private final String name;
+    private final CommandExecutor executor;
+    private final String description;
+    private final String argsString;
+    private final int[] possibleArgsCount;
     private String parentCommandName;
 
     public Subcommand(String name,String argsString, String description, CommandExecutor executor){
@@ -18,11 +18,28 @@ public class Subcommand {
         this.executor = executor;
     }
 
-    public String createHelpString(){
-        return parentCommandName+" "+name+(argsString.length() > 0 ? " " : "")+argsString + " - " + description;
+    public String createUsageString(){
+        return parentCommandName+" "+name+(argsString.length() > 0 ? " " : "")+argsString;
     }
 
-    public void setParentCommandName(String parentCommandName){ this.parentCommandName = parentCommandName; };
+
+    public String createHelpString(){
+        return createUsageString() + " - " + description;
+    }
+
+    public boolean isGoodUsage(String[] usage){
+        int argsCount = usage.length;
+
+        //If contains
+        for(int num : possibleArgsCount){
+            if(argsCount == num) return true;
+        }
+        //If not contains
+        return false;
+    }
+
+    public void setParentCommandName(String parentCommandName){ this.parentCommandName = parentCommandName; }
+
     public String getName(){
         return name;
     }

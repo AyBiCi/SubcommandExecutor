@@ -13,11 +13,11 @@ public class ArgsCounter {
             }
         }
 
-        int[] allPosibilities = new int[possible + 1];
+        int[] allPossibilities = new int[possible + 1];
 
         for (int num = normal, i = 0; i <= possible; num++, i++)
-            allPosibilities[i] = num;
+            allPossibilities[i] = num;
 
-        return allPosibilities;
+        return allPossibilities;
     }
 }

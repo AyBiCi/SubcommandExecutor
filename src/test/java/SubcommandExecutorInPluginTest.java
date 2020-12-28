@@ -44,4 +44,12 @@ public class SubcommandExecutorInPluginTest {
         assertEquals("test marek - marek",player.nextMessage());
         assertEquals("test remove <name> - removes test",player.nextMessage());
     }
+
+    @Test
+    public void testUsageMessage(){
+        player.performCommand("test add");
+        assertEquals("Bad usage! Usage: test add <name>",player.nextMessage());
+        player.performCommand("test remove");
+        assertEquals("Bad usage! Usage: test remove <name>",player.nextMessage());
+    }
 }

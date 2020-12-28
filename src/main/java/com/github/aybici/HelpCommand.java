@@ -2,7 +2,7 @@ package com.github.aybici;
 
 public class HelpCommand {
     public static Subcommand newHelpCommand(SubcommandExecutor executor) {
-        Subcommand helpCommand = new Subcommand("help",
+        return new Subcommand("help",
                 "",
                 "shows all commands in plugin",
                 (commandSender, command, s, strings) -> {
@@ -13,7 +13,6 @@ public class HelpCommand {
                     }
                     return true;
                 });
-        return helpCommand;
     }
 
 }

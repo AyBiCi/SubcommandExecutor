@@ -8,10 +8,11 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@SuppressWarnings("NullableProblems")
 public class SubcommandExecutor implements CommandExecutor{
 
     private final HashMap<String,Subcommand> executors = new HashMap<>();
-    private String commandName;
+    private final String commandName;
     private CommandExecutor defaultExecutor;
 
     public SubcommandExecutor(String commandName) {
@@ -39,7 +40,11 @@ public class SubcommandExecutor implements CommandExecutor{
 
         if(hasExecutor(subcommandName)){
             Subcommand executor = getExecutor(subcommandName);
-            executor.getExecutor().onCommand(commandSender, command, s, newArgs);
+
+            if(executor.isGoodUsage(newArgs))
+                executor.getExecutor().onCommand(commandSender, command, s, newArgs);
+            else
+                commandSender.sendMessage("Bad usage! Usage: "+executor.createUsageString());
             return true;
         }
         else if(hasDefaultExecutor()){
